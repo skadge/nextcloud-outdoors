@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<info xmlns:xsi= "http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="https://apps.nextcloud.com/schema/apps/info.xsd">
+    <!--
+    SPDX-FileCopyrightText: Séverin Lemaignan <severin@guakamole.org>
+    SPDX-License-Identifier: CC0-1.0
+    -->
+    <id>outdoors</id>
+    <name>Outdoors</name>
+    <summary>Prepare, store, edit your next outdoors adventure</summary>
+    <description><![CDATA[An app to prepare, store, visualize and edit GPS traces (GPX) for outdoors activities like hiking or mountain biking.]]></description>
+    <version>0.0.2</version>
+    <licence>agpl</licence>
+    <author mail="severin@guakamole.org" >Séverin Lemaignan</author>
+    <namespace>Outdoors</namespace>
+    <category>tools</category>
+    <bugs>http://test.com</bugs>
+    <dependencies>
+        <nextcloud min-version="26" max-version="28"/>
+    </dependencies>
+    <navigations>
+        <navigation>
+            <name>Outdoors</name>
+            <route>outdoors.page.index</route>
+        </navigation>
+    </navigations>
+</info>
