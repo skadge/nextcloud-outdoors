@@ -33,5 +33,6 @@ return [
 		['name' => 'routes#addUserRoute', 'url' => '/api/{apiVersion}/routes', 'verb' => 'POST', 'requirements' => $requirements],
 		['name' => 'routes#editUserRoute', 'url' => '/api/{apiVersion}/routes/{id}', 'verb' => 'PUT', 'requirements' => $requirements],
 		['name' => 'routes#deleteUserRoute', 'url' => '/api/{apiVersion}/routes/{id}', 'verb' => 'DELETE', 'requirements' => $requirements],
+		['name' => 'routes#getUserGpxRoutes', 'url' => '/api/{apiVersion}/routes/gpx', 'verb' => 'GET', 'requirements' => $requirements],
 	],
 ];

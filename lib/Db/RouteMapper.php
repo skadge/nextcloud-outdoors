@@ -38,6 +38,19 @@ class RouteMapper extends QBMapper {
 		return $this->findEntity($qb);
 	}
 
+	public function getRouteByName(string $userId, string $name): Route {
+		$qb = $this->db->getQueryBuilder();
+
+		$qb->select('*')
+			->from($this->getTableName())
+			->where(
+				$qb->expr()->eq('user_id', $qb->createNamedParameter($userId, IQueryBuilder::PARAM_STR)))
+		        ->andWhere(
+		  	        $qb->expr()->eq('name', $qb->createNamedParameter($name, IQueryBuilder::PARAM_STR)));
+
+		return $this->findEntity($qb);
+	}
+
 	/**
 	 * @param int $id
 	 * @param string $userId
@@ -77,6 +90,7 @@ class RouteMapper extends QBMapper {
 
 		return $this->findEntities($qb);
 	}
+
 
 	/**
 	 * @param string $userId
@@ -118,6 +132,22 @@ class RouteMapper extends QBMapper {
 		if ($content !== null) {
 			$route->setContent($content);
 		}
+		$timestamp = (new DateTime())->getTimestamp();
+		$route->setLastModified($timestamp);
+		return $this->update($route);
+	}
+
+	public function createOrUpdateRoute(string $userId, string $name = null, ?string $content = null): ?Route {
+		try {
+			$route = $this->getRouteByName($userId, $name);
+		} catch (DoesNotExistException $e) {
+			return $this->createRoute($userId, $name, $content);
+		}
+
+		if ($content !== null) {
+			$route->setContent($content);
+		}
+
 		$timestamp = (new DateTime())->getTimestamp();
 		$route->setLastModified($timestamp);
 		return $this->update($route);

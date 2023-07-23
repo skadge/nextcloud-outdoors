@@ -18,7 +18,7 @@
 			</NcEmptyContent>
 			<NcAppNavigationItem v-for="route in sortedRoutes"
 				:key="route.id"
-				:name="route.name"
+				:name="route.description"
 				:class="{ selectedRoute: route.id === selectedRouteId }"
 				:force-display-actions="true"
 				:force-menu="false"
@@ -33,7 +33,7 @@
 						<template #icon>
 							<FileExportIcon />
 						</template>
-						{{ t('outdoors', 'Export to file') }}
+						{{ t('outdoors', 'Re-export to GPX file') }}
 					</NcActionButton>
 					<NcActionButton
 						:close-after-click="true"

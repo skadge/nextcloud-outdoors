@@ -5,6 +5,7 @@ namespace OCA\Outdoors\Service;
 use Exception;
 use OC\User\NoUserException;
 use OCA\Outdoors\AppInfo\Application;
+use OCA\Outdoors\Db\Route;
 use OCA\Outdoors\Db\RouteMapper;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
@@ -16,10 +17,15 @@ use OCP\Files\NotFoundException;
 use OCP\Files\NotPermittedException;
 use OCP\Lock\LockedException;
 
+use OCP\ILogger;
+
+use phpGPX\phpGPX;
+
 class RouteService {
 
 	public function __construct(
 		string $appName,
+		private ILogger $logger,
 		private IRootFolder $rootFolder,
 		private RouteMapper $routeMapper
 	) {
@@ -74,5 +80,33 @@ class RouteService {
 			$routeFolder->newFile($fileName, $fileContent);
 			return Application::ROUTES_FOLDER_NAME . '/' . $fileName;
 		}
+	}
+
+	/**
+	 * @param string $userId
+	 * @return Route[]
+	 */
+	public function getGpxRoutes(string $userId): array {
+		$routeFolder = $this->createOrGetRoutesDirectory($userId);
+		$this->logger->error("Listing gpx files...");
+
+		$gpx_routes = [];
+
+		foreach($routeFolder->searchByMime("application/gpx+xml") as $node) {
+			$this->logger->error($node->getPath());
+			$gpx = new phpGPX();
+			$file = $gpx->parse($node->getContent());
+
+			//foreach ($file->tracks as $track)
+			//{
+			//    // Statistics for whole track
+			//}
+			$metadata = $file->metadata;
+			$this->logger->error("Loading file ".$node->getName());
+
+			$route = $this->routeMapper->createOrUpdateRoute($userId, $node->getName(), $node->getContent());
+			array_push($gpx_routes, $route);
+		}
+		return $gpx_routes;
 	}
 }

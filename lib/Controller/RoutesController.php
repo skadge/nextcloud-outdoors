@@ -95,4 +95,16 @@ class RoutesController extends OCSController {
 			return new DataResponse(['error' => $e->getMessage()], Http::STATUS_BAD_REQUEST);
 		}
 	}
+
+	/**
+	 * @return DataResponse
+	 */
+	public function listUserGpxRoutes(): DataResponse {
+		try {
+			$paths = $this->routeService->getGpxRoutes($this->userId);
+			return new DataResponse($paths);
+		} catch (Exception | Throwable $e) {
+			return new DataResponse(['error' => $e->getMessage()], Http::STATUS_BAD_REQUEST);
+		}
+	}
 }

@@ -13,6 +13,7 @@ use OCP\AppFramework\Controller;
 
 use OCA\Outdoors\AppInfo\Application;
 use OCA\Outdoors\Db\RouteMapper;
+use OCA\Outdoors\Service\RouteService;
 
 use OCP\PreConditionNotMetException;
 
@@ -27,6 +28,7 @@ class PageController extends Controller {
 		private IInitialState $initialStateService,
 		private IConfig $config,
 		private RouteMapper $routeMapper,
+		private RouteService $routeService,
 		private ?string $userId
 	) {
 		parent::__construct($appName, $request);
@@ -46,11 +48,18 @@ class PageController extends Controller {
  		} catch (\Exception | \Throwable $e) {
  			$routes = [];
  		}
+
+ 		$gpx_routes = $this->routeService->getGpxRoutes($this->userId);
+		$routes = array_merge($routes, $gpx_routes);
+
+
 		$selectedRouteId = (int) $this->config->getUserValue($this->userId, Application::APP_ID, 'selected_route_id', '0');
+
 		$state = [
 			'routes' => $routes,
 			'selected_route_id' => $selectedRouteId,
 		];
+
 		$this->initialStateService->provideInitialState('outdoors-initial-state', $state);
 
 		$response = new TemplateResponse(Application::APP_ID, 'main');
