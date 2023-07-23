@@ -10244,37 +10244,39 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vue2_leaflet__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue2-leaflet */ "./node_modules/vue2-leaflet/dist/components/LMap.js");
-/* harmony import */ var vue2_leaflet__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue2-leaflet */ "./node_modules/vue2-leaflet/dist/components/LTileLayer.js");
-/* harmony import */ var vue2_leaflet__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue2-leaflet */ "./node_modules/vue2-leaflet/dist/components/LControl.js");
-/* harmony import */ var vue2_leaflet__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vue2-leaflet */ "./node_modules/vue2-leaflet/dist/components/LControlScale.js");
-/* harmony import */ var vue2_leaflet__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vue2-leaflet */ "./node_modules/vue2-leaflet/dist/components/LControlZoom.js");
-/* harmony import */ var vue2_leaflet__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vue2-leaflet */ "./node_modules/vue2-leaflet/dist/components/LMarker.js");
-/* harmony import */ var vue2_leaflet__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! vue2-leaflet */ "./node_modules/vue2-leaflet/dist/components/LCircleMarker.js");
-/* harmony import */ var vue2_leaflet__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! vue2-leaflet */ "./node_modules/vue2-leaflet/dist/components/LCircle.js");
+/* harmony import */ var vue2_leaflet__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue2-leaflet */ "./node_modules/vue2-leaflet/dist/components/LMap.js");
+/* harmony import */ var vue2_leaflet__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue2-leaflet */ "./node_modules/vue2-leaflet/dist/components/LTileLayer.js");
+/* harmony import */ var vue2_leaflet__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vue2-leaflet */ "./node_modules/vue2-leaflet/dist/components/LControl.js");
+/* harmony import */ var vue2_leaflet__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vue2-leaflet */ "./node_modules/vue2-leaflet/dist/components/LControlScale.js");
+/* harmony import */ var vue2_leaflet__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vue2-leaflet */ "./node_modules/vue2-leaflet/dist/components/LControlZoom.js");
+/* harmony import */ var vue2_leaflet__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! vue2-leaflet */ "./node_modules/vue2-leaflet/dist/components/LMarker.js");
 /* harmony import */ var _utils_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils.js */ "./src/utils.js");
 /* harmony import */ var leaflet__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! leaflet */ "./node_modules/leaflet/dist/leaflet-src.js");
 /* harmony import */ var leaflet__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(leaflet__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var leaflet_locatecontrol__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! leaflet.locatecontrol */ "./node_modules/leaflet.locatecontrol/src/L.Control.Locate.js");
+/* harmony import */ var leaflet_locatecontrol__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(leaflet_locatecontrol__WEBPACK_IMPORTED_MODULE_2__);
 
 
 
-delete leaflet__WEBPACK_IMPORTED_MODULE_1__.Icon.Default.prototype._getIconUrl;
-leaflet__WEBPACK_IMPORTED_MODULE_1__.Icon.Default.mergeOptions({
-  iconRetinaUrl: __webpack_require__(/*! leaflet/dist/images/marker-icon-2x.png */ "./node_modules/leaflet/dist/images/marker-icon-2x.png"),
-  iconUrl: __webpack_require__(/*! leaflet/dist/images/marker-icon.png */ "./node_modules/leaflet/dist/images/marker-icon.png"),
-  shadowUrl: __webpack_require__(/*! leaflet/dist/images/marker-shadow.png */ "./node_modules/leaflet/dist/images/marker-shadow.png")
-});
+// import { L, Icon } from 'leaflet'
+
+
+//delete Icon.Default.prototype._getIconUrl
+//Icon.Default.mergeOptions({
+//	iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
+//	iconUrl: require('leaflet/dist/images/marker-icon.png'),
+//	shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
+//})
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'MyMap',
   components: {
-    LMap: vue2_leaflet__WEBPACK_IMPORTED_MODULE_2__["default"],
-    LTileLayer: vue2_leaflet__WEBPACK_IMPORTED_MODULE_3__["default"],
-    LControl: vue2_leaflet__WEBPACK_IMPORTED_MODULE_4__["default"],
-    LControlScale: vue2_leaflet__WEBPACK_IMPORTED_MODULE_5__["default"],
-    LControlZoom: vue2_leaflet__WEBPACK_IMPORTED_MODULE_6__["default"],
-    LMarker: vue2_leaflet__WEBPACK_IMPORTED_MODULE_7__["default"],
-    LCircleMarker: vue2_leaflet__WEBPACK_IMPORTED_MODULE_8__["default"],
-    LCircle: vue2_leaflet__WEBPACK_IMPORTED_MODULE_9__["default"]
+    LMap: vue2_leaflet__WEBPACK_IMPORTED_MODULE_3__["default"],
+    LTileLayer: vue2_leaflet__WEBPACK_IMPORTED_MODULE_4__["default"],
+    LControl: vue2_leaflet__WEBPACK_IMPORTED_MODULE_5__["default"],
+    LControlScale: vue2_leaflet__WEBPACK_IMPORTED_MODULE_6__["default"],
+    LControlZoom: vue2_leaflet__WEBPACK_IMPORTED_MODULE_7__["default"],
+    LMarker: vue2_leaflet__WEBPACK_IMPORTED_MODULE_8__["default"]
   },
   data() {
     return {
@@ -10299,12 +10301,40 @@ leaflet__WEBPACK_IMPORTED_MODULE_1__.Icon.Default.mergeOptions({
     },
     onReady() {
       this.map = this.$refs.map.mapObject;
-      this.map.locate();
+      this.initLocControl(this.map);
+      // this.map.locate()
     },
+
     onLocationFound(l) {
       // console.log(l)
       this.location = l;
       this.map.flyTo(this.location.latlng);
+    },
+    initLocControl(map) {
+      // location control
+      const locControl = leaflet__WEBPACK_IMPORTED_MODULE_1___default().control.locate({
+        position: 'bottomright',
+        drawCircle: true,
+        drawMarker: true,
+        showPopup: false,
+        icon: 'icon icon-address',
+        iconLoading: 'icon icon-loading-small',
+        strings: {
+          title: t('maps', 'Current location')
+        },
+        flyTo: true,
+        returnToPrevBounds: true,
+        setView: 'untilPan',
+        showCompass: true,
+        locateOptions: {
+          enableHighAccuracy: true,
+          maxZoom: 15
+        },
+        onLocationError: e => {
+          alert(e.message);
+        }
+      }).addTo(map);
+      locControl.start();
     }
   }
 });
@@ -10640,22 +10670,7 @@ var render = function render() {
       ready: _vm.onReady,
       locationfound: _vm.onLocationFound
     }
-  }, [_vm.location ? [_c("LCircleMarker", {
-    attrs: {
-      "lat-lng": _vm.location.latlng,
-      "fill-opacity": 1,
-      radius: 10
-    }
-  }), _vm._v(" "), _c("LCircle", {
-    attrs: {
-      "lat-lng": _vm.location.latlng,
-      "fill-opacity": 0.3,
-      options: {
-        radius: _vm.location.accuracy
-      },
-      stroke: false
-    }
-  })] : _vm._e(), _vm._v(" "), _c("LTileLayer", {
+  }, [_c("LTileLayer", {
     attrs: {
       url: _vm.url,
       attribution: _vm.attribution
@@ -10745,7 +10760,7 @@ var render = function render() {
               selectedRoute: route.id === _vm.selectedRouteId
             },
             attrs: {
-              name: route.name,
+              name: route.description,
               "force-display-actions": true,
               "force-menu": false
             },
@@ -10779,7 +10794,7 @@ var render = function render() {
                     },
                     proxy: true
                   }], null, true)
-                }, [_vm._v("\n\t\t\t\t\t" + _vm._s(_vm.t("outdoors", "Export to file")) + "\n\t\t\t\t")]), _vm._v(" "), _c("NcActionButton", {
+                }, [_vm._v("\n\t\t\t\t\t" + _vm._s(_vm.t("outdoors", "Re-export to GPX file")) + "\n\t\t\t\t")]), _vm._v(" "), _c("NcActionButton", {
                   attrs: {
                     "close-after-click": true
                   },
@@ -22067,6 +22082,963 @@ if (true) {
 } else {}
 
 })(window, document, 'Hammer');
+
+
+/***/ }),
+
+/***/ "./node_modules/leaflet.locatecontrol/src/L.Control.Locate.js":
+/*!********************************************************************!*\
+  !*** ./node_modules/leaflet.locatecontrol/src/L.Control.Locate.js ***!
+  \********************************************************************/
+/***/ ((module, exports, __webpack_require__) => {
+
+var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+Copyright (c) 2016 Dominik Moritz
+
+This file is part of the leaflet locate control. It is licensed under the MIT license.
+You can find the project at: https://github.com/domoritz/leaflet-locatecontrol
+*/
+(function (factory, window) {
+  // see https://github.com/Leaflet/Leaflet/blob/master/PLUGIN-GUIDE.md#module-loaders
+  // for details on how to structure a leaflet plugin.
+
+  // define an AMD module that relies on 'leaflet'
+  if (true) {
+    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(/*! leaflet */ "./node_modules/leaflet/dist/leaflet-src.js")], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+		__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
+		(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
+		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+
+    // define a Common JS module that relies on 'leaflet'
+  } else {}
+
+  // attach your plugin to the global 'L' variable
+  if (typeof window !== "undefined" && window.L) {
+    window.L.Control.Locate = factory(L);
+  }
+})(function (L) {
+  const LDomUtilApplyClassesMethod = (method, element, classNames) => {
+    classNames = classNames.split(" ");
+    classNames.forEach(function (className) {
+      L.DomUtil[method].call(this, element, className);
+    });
+  };
+
+  const addClasses = (el, names) => LDomUtilApplyClassesMethod("addClass", el, names);
+  const removeClasses = (el, names) => LDomUtilApplyClassesMethod("removeClass", el, names);
+
+  /**
+   * Compatible with L.Circle but a true marker instead of a path
+   */
+  const LocationMarker = L.Marker.extend({
+    initialize(latlng, options) {
+      L.Util.setOptions(this, options);
+      this._latlng = latlng;
+      this.createIcon();
+    },
+
+    /**
+     * Create a styled circle location marker
+     */
+    createIcon() {
+      const opt = this.options;
+
+      let style = "";
+
+      if (opt.color !== undefined) {
+        style += `stroke:${opt.color};`;
+      }
+      if (opt.weight !== undefined) {
+        style += `stroke-width:${opt.weight};`;
+      }
+      if (opt.fillColor !== undefined) {
+        style += `fill:${opt.fillColor};`;
+      }
+      if (opt.fillOpacity !== undefined) {
+        style += `fill-opacity:${opt.fillOpacity};`;
+      }
+      if (opt.opacity !== undefined) {
+        style += `opacity:${opt.opacity};`;
+      }
+
+      const icon = this._getIconSVG(opt, style);
+
+      this._locationIcon = L.divIcon({
+        className: icon.className,
+        html: icon.svg,
+        iconSize: [icon.w, icon.h]
+      });
+
+      this.setIcon(this._locationIcon);
+    },
+
+    /**
+     * Return the raw svg for the shape
+     *
+     * Split so can be easily overridden
+     */
+    _getIconSVG(options, style) {
+      const r = options.radius;
+      const w = options.weight;
+      const s = r + w;
+      const s2 = s * 2;
+      const svg =
+        `<svg xmlns="http://www.w3.org/2000/svg" width="${s2}" height="${s2}" version="1.1" viewBox="-${s} -${s} ${s2} ${s2}">` +
+        '<circle r="' +
+        r +
+        '" style="' +
+        style +
+        '" />' +
+        "</svg>";
+      return {
+        className: "leaflet-control-locate-location",
+        svg,
+        w: s2,
+        h: s2
+      };
+    },
+
+    setStyle(style) {
+      L.Util.setOptions(this, style);
+      this.createIcon();
+    }
+  });
+
+  const CompassMarker = LocationMarker.extend({
+    initialize(latlng, heading, options) {
+      L.Util.setOptions(this, options);
+      this._latlng = latlng;
+      this._heading = heading;
+      this.createIcon();
+    },
+
+    setHeading(heading) {
+      this._heading = heading;
+    },
+
+    /**
+     * Create a styled arrow compass marker
+     */
+    _getIconSVG(options, style) {
+      const r = options.radius;
+      const w = options.width + options.weight;
+      const h = (r + options.depth + options.weight) * 2;
+      const path = `M0,0 l${options.width / 2},${options.depth} l-${w},0 z`;
+      const svgstyle = `transform: rotate(${this._heading}deg)`;
+      const svg =
+        `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" version="1.1" viewBox="-${w / 2} 0 ${w} ${h}" style="${svgstyle}">` +
+        '<path d="' +
+        path +
+        '" style="' +
+        style +
+        '" />' +
+        "</svg>";
+      return {
+        className: "leaflet-control-locate-heading",
+        svg,
+        w,
+        h
+      };
+    }
+  });
+
+  const LocateControl = L.Control.extend({
+    options: {
+      /** Position of the control */
+      position: "topleft",
+      /** The layer that the user's location should be drawn on. By default creates a new layer. */
+      layer: undefined,
+      /**
+       * Automatically sets the map view (zoom and pan) to the user's location as it updates.
+       * While the map is following the user's location, the control is in the `following` state,
+       * which changes the style of the control and the circle marker.
+       *
+       * Possible values:
+       *  - false: never updates the map view when location changes.
+       *  - 'once': set the view when the location is first determined
+       *  - 'always': always updates the map view when location changes.
+       *              The map view follows the user's location.
+       *  - 'untilPan': like 'always', except stops updating the
+       *                view if the user has manually panned the map.
+       *                The map view follows the user's location until she pans.
+       *  - 'untilPanOrZoom': (default) like 'always', except stops updating the
+       *                view if the user has manually panned the map.
+       *                The map view follows the user's location until she pans.
+       */
+      setView: "untilPanOrZoom",
+      /** Keep the current map zoom level when setting the view and only pan. */
+      keepCurrentZoomLevel: false,
+      /** After activating the plugin by clicking on the icon, zoom to the selected zoom level, even when keepCurrentZoomLevel is true. Set to 'false' to disable this feature. */
+      initialZoomLevel: false,
+      /**
+       * This callback can be used to override the viewport tracking
+       * This function should return a LatLngBounds object.
+       *
+       * For example to extend the viewport to ensure that a particular LatLng is visible:
+       *
+       * getLocationBounds: function(locationEvent) {
+       *    return locationEvent.bounds.extend([-33.873085, 151.219273]);
+       * },
+       */
+      getLocationBounds(locationEvent) {
+        return locationEvent.bounds;
+      },
+      /** Smooth pan and zoom to the location of the marker. Only works in Leaflet 1.0+. */
+      flyTo: false,
+      /**
+       * The user location can be inside and outside the current view when the user clicks on the
+       * control that is already active. Both cases can be configures separately.
+       * Possible values are:
+       *  - 'setView': zoom and pan to the current location
+       *  - 'stop': stop locating and remove the location marker
+       */
+      clickBehavior: {
+        /** What should happen if the user clicks on the control while the location is within the current view. */
+        inView: "stop",
+        /** What should happen if the user clicks on the control while the location is outside the current view. */
+        outOfView: "setView",
+        /**
+         * What should happen if the user clicks on the control while the location is within the current view
+         * and we could be following but are not. Defaults to a special value which inherits from 'inView';
+         */
+        inViewNotFollowing: "inView"
+      },
+      /**
+       * If set, save the map bounds just before centering to the user's
+       * location. When control is disabled, set the view back to the
+       * bounds that were saved.
+       */
+      returnToPrevBounds: false,
+      /**
+       * Keep a cache of the location after the user deactivates the control. If set to false, the user has to wait
+       * until the locate API returns a new location before they see where they are again.
+       */
+      cacheLocation: true,
+      /** If set, a circle that shows the location accuracy is drawn. */
+      drawCircle: true,
+      /** If set, the marker at the users' location is drawn. */
+      drawMarker: true,
+      /** If set and supported then show the compass heading */
+      showCompass: true,
+      /** The class to be used to create the marker. For example L.CircleMarker or L.Marker */
+      markerClass: LocationMarker,
+      /** The class us be used to create the compass bearing arrow */
+      compassClass: CompassMarker,
+      /** Accuracy circle style properties. NOTE these styles should match the css animations styles */
+      circleStyle: {
+        className: "leaflet-control-locate-circle",
+        color: "#136AEC",
+        fillColor: "#136AEC",
+        fillOpacity: 0.15,
+        weight: 0
+      },
+      /** Inner marker style properties. Only works if your marker class supports `setStyle`. */
+      markerStyle: {
+        className: "leaflet-control-locate-marker",
+        color: "#fff",
+        fillColor: "#2A93EE",
+        fillOpacity: 1,
+        weight: 3,
+        opacity: 1,
+        radius: 9
+      },
+      /** Compass */
+      compassStyle: {
+        fillColor: "#2A93EE",
+        fillOpacity: 1,
+        weight: 0,
+        color: "#fff",
+        opacity: 1,
+        radius: 9, // How far is the arrow is from the center of of the marker
+        width: 9, // Width of the arrow
+        depth: 6 // Length of the arrow
+      },
+      /**
+       * Changes to accuracy circle and inner marker while following.
+       * It is only necessary to provide the properties that should change.
+       */
+      followCircleStyle: {},
+      followMarkerStyle: {
+        // color: '#FFA500',
+        // fillColor: '#FFB000'
+      },
+      followCompassStyle: {},
+      /** The CSS class for the icon. For example fa-location-arrow or fa-map-marker */
+      icon: "leaflet-control-locate-location-arrow",
+      iconLoading: "leaflet-control-locate-spinner",
+      /** The element to be created for icons. For example span or i */
+      iconElementTag: "span",
+      /** The element to be created for the text. For example small or span */
+      textElementTag: "small",
+      /** Padding around the accuracy circle. */
+      circlePadding: [0, 0],
+      /** Use metric units. */
+      metric: true,
+      /**
+       * This callback can be used in case you would like to override button creation behavior.
+       * This is useful for DOM manipulation frameworks such as angular etc.
+       * This function should return an object with HtmlElement for the button (link property) and the icon (icon property).
+       */
+      createButtonCallback(container, options) {
+        const link = L.DomUtil.create("a", "leaflet-bar-part leaflet-bar-part-single", container);
+        link.title = options.strings.title;
+        link.href = "#";
+        link.setAttribute("role", "button");
+        const icon = L.DomUtil.create(options.iconElementTag, options.icon, link);
+
+        if (options.strings.text !== undefined) {
+          const text = L.DomUtil.create(options.textElementTag, "leaflet-locate-text", link);
+          text.textContent = options.strings.text;
+          link.classList.add("leaflet-locate-text-active");
+          link.parentNode.style.display = "flex";
+          if (options.icon.length > 0) {
+            icon.classList.add("leaflet-locate-icon");
+          }
+        }
+
+        return { link, icon };
+      },
+      /** This event is called in case of any location error that is not a time out error. */
+      onLocationError(err, control) {
+        alert(err.message);
+      },
+      /**
+       * This event is called when the user's location is outside the bounds set on the map.
+       * The event is called repeatedly when the location changes.
+       */
+      onLocationOutsideMapBounds(control) {
+        control.stop();
+        alert(control.options.strings.outsideMapBoundsMsg);
+      },
+      /** Display a pop-up when the user click on the inner marker. */
+      showPopup: true,
+      strings: {
+        title: "Show me where I am",
+        metersUnit: "meters",
+        feetUnit: "feet",
+        popup: "You are within {distance} {unit} from this point",
+        outsideMapBoundsMsg: "You seem located outside the boundaries of the map"
+      },
+      /** The default options passed to leaflets locate method. */
+      locateOptions: {
+        maxZoom: Infinity,
+        watch: true, // if you overwrite this, visualization cannot be updated
+        setView: false // have to set this to false because we have to
+        // do setView manually
+      }
+    },
+
+    initialize(options) {
+      // set default options if nothing is set (merge one step deep)
+      for (const i in options) {
+        if (typeof this.options[i] === "object") {
+          L.extend(this.options[i], options[i]);
+        } else {
+          this.options[i] = options[i];
+        }
+      }
+
+      // extend the follow marker style and circle from the normal style
+      this.options.followMarkerStyle = L.extend({}, this.options.markerStyle, this.options.followMarkerStyle);
+      this.options.followCircleStyle = L.extend({}, this.options.circleStyle, this.options.followCircleStyle);
+      this.options.followCompassStyle = L.extend({}, this.options.compassStyle, this.options.followCompassStyle);
+    },
+
+    /**
+     * Add control to map. Returns the container for the control.
+     */
+    onAdd(map) {
+      const container = L.DomUtil.create("div", "leaflet-control-locate leaflet-bar leaflet-control");
+      this._container = container;
+      this._map = map;
+      this._layer = this.options.layer || new L.LayerGroup();
+      this._layer.addTo(map);
+      this._event = undefined;
+      this._compassHeading = null;
+      this._prevBounds = null;
+
+      const linkAndIcon = this.options.createButtonCallback(container, this.options);
+      this._link = linkAndIcon.link;
+      this._icon = linkAndIcon.icon;
+
+      L.DomEvent.on(
+        this._link,
+        "click",
+        function (ev) {
+          L.DomEvent.stopPropagation(ev);
+          L.DomEvent.preventDefault(ev);
+          this._onClick();
+        },
+        this
+      ).on(this._link, "dblclick", L.DomEvent.stopPropagation);
+
+      this._resetVariables();
+
+      this._map.on("unload", this._unload, this);
+
+      return container;
+    },
+
+    /**
+     * This method is called when the user clicks on the control.
+     */
+    _onClick() {
+      this._justClicked = true;
+      const wasFollowing = this._isFollowing();
+      this._userPanned = false;
+      this._userZoomed = false;
+
+      if (this._active && !this._event) {
+        // click while requesting
+        this.stop();
+      } else if (this._active) {
+        const behaviors = this.options.clickBehavior;
+        let behavior = behaviors.outOfView;
+        if (this._map.getBounds().contains(this._event.latlng)) {
+          behavior = wasFollowing ? behaviors.inView : behaviors.inViewNotFollowing;
+        }
+
+        // Allow inheriting from another behavior
+        if (behaviors[behavior]) {
+          behavior = behaviors[behavior];
+        }
+
+        switch (behavior) {
+          case "setView":
+            this.setView();
+            break;
+          case "stop":
+            this.stop();
+            if (this.options.returnToPrevBounds) {
+              const f = this.options.flyTo ? this._map.flyToBounds : this._map.fitBounds;
+              f.bind(this._map)(this._prevBounds);
+            }
+            break;
+        }
+      } else {
+        if (this.options.returnToPrevBounds) {
+          this._prevBounds = this._map.getBounds();
+        }
+        this.start();
+      }
+
+      this._updateContainerStyle();
+    },
+
+    /**
+     * Starts the plugin:
+     * - activates the engine
+     * - draws the marker (if coordinates available)
+     */
+    start() {
+      this._activate();
+
+      if (this._event) {
+        this._drawMarker(this._map);
+
+        // if we already have a location but the user clicked on the control
+        if (this.options.setView) {
+          this.setView();
+        }
+      }
+      this._updateContainerStyle();
+    },
+
+    /**
+     * Stops the plugin:
+     * - deactivates the engine
+     * - reinitializes the button
+     * - removes the marker
+     */
+    stop() {
+      this._deactivate();
+
+      this._cleanClasses();
+      this._resetVariables();
+
+      this._removeMarker();
+    },
+
+    /**
+     * Keep the control active but stop following the location
+     */
+    stopFollowing() {
+      this._userPanned = true;
+      this._updateContainerStyle();
+      this._drawMarker();
+    },
+
+    /**
+     * This method launches the location engine.
+     * It is called before the marker is updated,
+     * event if it does not mean that the event will be ready.
+     *
+     * Override it if you want to add more functionalities.
+     * It should set the this._active to true and do nothing if
+     * this._active is true.
+     */
+    _activate() {
+      if (this._active || !this._map) {
+        return;
+      }
+
+      this._map.locate(this.options.locateOptions);
+      this._map.fire("locateactivate", this);
+      this._active = true;
+
+      // bind event listeners
+      this._map.on("locationfound", this._onLocationFound, this);
+      this._map.on("locationerror", this._onLocationError, this);
+      this._map.on("dragstart", this._onDrag, this);
+      this._map.on("zoomstart", this._onZoom, this);
+      this._map.on("zoomend", this._onZoomEnd, this);
+      if (this.options.showCompass) {
+        const oriAbs = "ondeviceorientationabsolute" in window;
+        if (oriAbs || "ondeviceorientation" in window) {
+          const _this = this;
+          const deviceorientation = function () {
+            L.DomEvent.on(window, oriAbs ? "deviceorientationabsolute" : "deviceorientation", _this._onDeviceOrientation, _this);
+          };
+          if (DeviceOrientationEvent && typeof DeviceOrientationEvent.requestPermission === "function") {
+            DeviceOrientationEvent.requestPermission().then(function (permissionState) {
+              if (permissionState === "granted") {
+                deviceorientation();
+              }
+            });
+          } else {
+            deviceorientation();
+          }
+        }
+      }
+    },
+
+    /**
+     * Called to stop the location engine.
+     *
+     * Override it to shutdown any functionalities you added on start.
+     */
+    _deactivate() {
+      if (!this._active || !this._map) {
+        return;
+      }
+
+      this._map.stopLocate();
+      this._map.fire("locatedeactivate", this);
+      this._active = false;
+
+      if (!this.options.cacheLocation) {
+        this._event = undefined;
+      }
+
+      // unbind event listeners
+      this._map.off("locationfound", this._onLocationFound, this);
+      this._map.off("locationerror", this._onLocationError, this);
+      this._map.off("dragstart", this._onDrag, this);
+      this._map.off("zoomstart", this._onZoom, this);
+      this._map.off("zoomend", this._onZoomEnd, this);
+      if (this.options.showCompass) {
+        this._compassHeading = null;
+        if ("ondeviceorientationabsolute" in window) {
+          L.DomEvent.off(window, "deviceorientationabsolute", this._onDeviceOrientation, this);
+        } else if ("ondeviceorientation" in window) {
+          L.DomEvent.off(window, "deviceorientation", this._onDeviceOrientation, this);
+        }
+      }
+    },
+
+    /**
+     * Zoom (unless we should keep the zoom level) and an to the current view.
+     */
+    setView() {
+      this._drawMarker();
+      if (this._isOutsideMapBounds()) {
+        this._event = undefined; // clear the current location so we can get back into the bounds
+        this.options.onLocationOutsideMapBounds(this);
+      } else {
+        if (this._justClicked && this.options.initialZoomLevel !== false) {
+          var f = this.options.flyTo ? this._map.flyTo : this._map.setView;
+          f.bind(this._map)([this._event.latitude, this._event.longitude], this.options.initialZoomLevel);
+        } else if (this.options.keepCurrentZoomLevel) {
+          var f = this.options.flyTo ? this._map.flyTo : this._map.panTo;
+          f.bind(this._map)([this._event.latitude, this._event.longitude]);
+        } else {
+          var f = this.options.flyTo ? this._map.flyToBounds : this._map.fitBounds;
+          // Ignore zoom events while setting the viewport as these would stop following
+          this._ignoreEvent = true;
+          f.bind(this._map)(this.options.getLocationBounds(this._event), {
+            padding: this.options.circlePadding,
+            maxZoom: this.options.initialZoomLevel || this.options.locateOptions.maxZoom
+          });
+          L.Util.requestAnimFrame(function () {
+            // Wait until after the next animFrame because the flyTo can be async
+            this._ignoreEvent = false;
+          }, this);
+        }
+      }
+    },
+
+    /**
+     *
+     */
+    _drawCompass() {
+      if (!this._event) {
+        return;
+      }
+
+      const latlng = this._event.latlng;
+
+      if (this.options.showCompass && latlng && this._compassHeading !== null) {
+        const cStyle = this._isFollowing() ? this.options.followCompassStyle : this.options.compassStyle;
+        if (!this._compass) {
+          this._compass = new this.options.compassClass(latlng, this._compassHeading, cStyle).addTo(this._layer);
+        } else {
+          this._compass.setLatLng(latlng);
+          this._compass.setHeading(this._compassHeading);
+          // If the compassClass can be updated with setStyle, update it.
+          if (this._compass.setStyle) {
+            this._compass.setStyle(cStyle);
+          }
+        }
+        //
+      }
+      if (this._compass && (!this.options.showCompass || this._compassHeading === null)) {
+        this._compass.removeFrom(this._layer);
+        this._compass = null;
+      }
+    },
+
+    /**
+     * Draw the marker and accuracy circle on the map.
+     *
+     * Uses the event retrieved from onLocationFound from the map.
+     */
+    _drawMarker() {
+      if (this._event.accuracy === undefined) {
+        this._event.accuracy = 0;
+      }
+
+      const radius = this._event.accuracy;
+      const latlng = this._event.latlng;
+
+      // circle with the radius of the location's accuracy
+      if (this.options.drawCircle) {
+        const style = this._isFollowing() ? this.options.followCircleStyle : this.options.circleStyle;
+
+        if (!this._circle) {
+          this._circle = L.circle(latlng, radius, style).addTo(this._layer);
+        } else {
+          this._circle.setLatLng(latlng).setRadius(radius).setStyle(style);
+        }
+      }
+
+      let distance;
+      let unit;
+      if (this.options.metric) {
+        distance = radius.toFixed(0);
+        unit = this.options.strings.metersUnit;
+      } else {
+        distance = (radius * 3.2808399).toFixed(0);
+        unit = this.options.strings.feetUnit;
+      }
+
+      // small inner marker
+      if (this.options.drawMarker) {
+        const mStyle = this._isFollowing() ? this.options.followMarkerStyle : this.options.markerStyle;
+        if (!this._marker) {
+          this._marker = new this.options.markerClass(latlng, mStyle).addTo(this._layer);
+        } else {
+          this._marker.setLatLng(latlng);
+          // If the markerClass can be updated with setStyle, update it.
+          if (this._marker.setStyle) {
+            this._marker.setStyle(mStyle);
+          }
+        }
+      }
+
+      this._drawCompass();
+
+      const t = this.options.strings.popup;
+      function getPopupText() {
+        if (typeof t === "string") {
+          return L.Util.template(t, { distance, unit });
+        } else if (typeof t === "function") {
+          return t({ distance, unit });
+        } else {
+          return t;
+        }
+      }
+      if (this.options.showPopup && t && this._marker) {
+        this._marker.bindPopup(getPopupText())._popup.setLatLng(latlng);
+      }
+      if (this.options.showPopup && t && this._compass) {
+        this._compass.bindPopup(getPopupText())._popup.setLatLng(latlng);
+      }
+    },
+
+    /**
+     * Remove the marker from map.
+     */
+    _removeMarker() {
+      this._layer.clearLayers();
+      this._marker = undefined;
+      this._circle = undefined;
+    },
+
+    /**
+     * Unload the plugin and all event listeners.
+     * Kind of the opposite of onAdd.
+     */
+    _unload() {
+      this.stop();
+      this._map.off("unload", this._unload, this);
+    },
+
+    /**
+     * Sets the compass heading
+     */
+    _setCompassHeading(angle) {
+      if (!isNaN(parseFloat(angle)) && isFinite(angle)) {
+        angle = Math.round(angle);
+
+        this._compassHeading = angle;
+        L.Util.requestAnimFrame(this._drawCompass, this);
+      } else {
+        this._compassHeading = null;
+      }
+    },
+
+    /**
+     * If the compass fails calibration just fail safely and remove the compass
+     */
+    _onCompassNeedsCalibration() {
+      this._setCompassHeading();
+    },
+
+    /**
+     * Process and normalise compass events
+     */
+    _onDeviceOrientation(e) {
+      if (!this._active) {
+        return;
+      }
+
+      if (e.webkitCompassHeading) {
+        // iOS
+        this._setCompassHeading(e.webkitCompassHeading);
+      } else if (e.absolute && e.alpha) {
+        // Android
+        this._setCompassHeading(360 - e.alpha);
+      }
+    },
+
+    /**
+     * Calls deactivate and dispatches an error.
+     */
+    _onLocationError(err) {
+      // ignore time out error if the location is watched
+      if (err.code == 3 && this.options.locateOptions.watch) {
+        return;
+      }
+
+      this.stop();
+      this.options.onLocationError(err, this);
+    },
+
+    /**
+     * Stores the received event and updates the marker.
+     */
+    _onLocationFound(e) {
+      // no need to do anything if the location has not changed
+      if (this._event && this._event.latlng.lat === e.latlng.lat && this._event.latlng.lng === e.latlng.lng && this._event.accuracy === e.accuracy) {
+        return;
+      }
+
+      if (!this._active) {
+        // we may have a stray event
+        return;
+      }
+
+      this._event = e;
+
+      this._drawMarker();
+      this._updateContainerStyle();
+
+      switch (this.options.setView) {
+        case "once":
+          if (this._justClicked) {
+            this.setView();
+          }
+          break;
+        case "untilPan":
+          if (!this._userPanned) {
+            this.setView();
+          }
+          break;
+        case "untilPanOrZoom":
+          if (!this._userPanned && !this._userZoomed) {
+            this.setView();
+          }
+          break;
+        case "always":
+          this.setView();
+          break;
+        case false:
+          // don't set the view
+          break;
+      }
+
+      this._justClicked = false;
+    },
+
+    /**
+     * When the user drags. Need a separate event so we can bind and unbind event listeners.
+     */
+    _onDrag() {
+      // only react to drags once we have a location
+      if (this._event && !this._ignoreEvent) {
+        this._userPanned = true;
+        this._updateContainerStyle();
+        this._drawMarker();
+      }
+    },
+
+    /**
+     * When the user zooms. Need a separate event so we can bind and unbind event listeners.
+     */
+    _onZoom() {
+      // only react to drags once we have a location
+      if (this._event && !this._ignoreEvent) {
+        this._userZoomed = true;
+        this._updateContainerStyle();
+        this._drawMarker();
+      }
+    },
+
+    /**
+     * After a zoom ends update the compass and handle sideways zooms
+     */
+    _onZoomEnd() {
+      if (this._event) {
+        this._drawCompass();
+      }
+
+      if (this._event && !this._ignoreEvent) {
+        // If we have zoomed in and out and ended up sideways treat it as a pan
+        if (this._marker && !this._map.getBounds().pad(-0.3).contains(this._marker.getLatLng())) {
+          this._userPanned = true;
+          this._updateContainerStyle();
+          this._drawMarker();
+        }
+      }
+    },
+
+    /**
+     * Compute whether the map is following the user location with pan and zoom.
+     */
+    _isFollowing() {
+      if (!this._active) {
+        return false;
+      }
+
+      if (this.options.setView === "always") {
+        return true;
+      } else if (this.options.setView === "untilPan") {
+        return !this._userPanned;
+      } else if (this.options.setView === "untilPanOrZoom") {
+        return !this._userPanned && !this._userZoomed;
+      }
+    },
+
+    /**
+     * Check if location is in map bounds
+     */
+    _isOutsideMapBounds() {
+      if (this._event === undefined) {
+        return false;
+      }
+      return this._map.options.maxBounds && !this._map.options.maxBounds.contains(this._event.latlng);
+    },
+
+    /**
+     * Toggles button class between following and active.
+     */
+    _updateContainerStyle() {
+      if (!this._container) {
+        return;
+      }
+
+      if (this._active && !this._event) {
+        // active but don't have a location yet
+        this._setClasses("requesting");
+      } else if (this._isFollowing()) {
+        this._setClasses("following");
+      } else if (this._active) {
+        this._setClasses("active");
+      } else {
+        this._cleanClasses();
+      }
+    },
+
+    /**
+     * Sets the CSS classes for the state.
+     */
+    _setClasses(state) {
+      if (state == "requesting") {
+        removeClasses(this._container, "active following");
+        addClasses(this._container, "requesting");
+
+        removeClasses(this._icon, this.options.icon);
+        addClasses(this._icon, this.options.iconLoading);
+      } else if (state == "active") {
+        removeClasses(this._container, "requesting following");
+        addClasses(this._container, "active");
+
+        removeClasses(this._icon, this.options.iconLoading);
+        addClasses(this._icon, this.options.icon);
+      } else if (state == "following") {
+        removeClasses(this._container, "requesting");
+        addClasses(this._container, "active following");
+
+        removeClasses(this._icon, this.options.iconLoading);
+        addClasses(this._icon, this.options.icon);
+      }
+    },
+
+    /**
+     * Removes all classes from button.
+     */
+    _cleanClasses() {
+      L.DomUtil.removeClass(this._container, "requesting");
+      L.DomUtil.removeClass(this._container, "active");
+      L.DomUtil.removeClass(this._container, "following");
+
+      removeClasses(this._icon, this.options.iconLoading);
+      addClasses(this._icon, this.options.icon);
+    },
+
+    /**
+     * Reinitializes state variables.
+     */
+    _resetVariables() {
+      // whether locate is active or not
+      this._active = false;
+
+      // true if the control was clicked for the first time
+      // we need this so we can pan and zoom once we have the location
+      this._justClicked = false;
+
+      // true if the user has panned the map after clicking the control
+      this._userPanned = false;
+
+      // true if the user has zoomed the map after clicking the control
+      this._userZoomed = false;
+    }
+  });
+
+  L.control.locate = (options) => new L.Control.Locate(options);
+
+  return LocateControl;
+}, window);
 
 
 /***/ }),
@@ -52845,1151 +53817,6 @@ if (inBrowser) {
 
 /***/ }),
 
-/***/ "./node_modules/vue2-leaflet/dist/components/LCircle.js":
-/*!**************************************************************!*\
-  !*** ./node_modules/vue2-leaflet/dist/components/LCircle.js ***!
-  \**************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var leaflet__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! leaflet */ "./node_modules/leaflet/dist/leaflet-src.js");
-/* harmony import */ var leaflet__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(leaflet__WEBPACK_IMPORTED_MODULE_0__);
-
-
-var capitalizeFirstLetter = function (string) {
-  if (!string || typeof string.charAt !== 'function') {
-    return string;
-  }
-  return string.charAt(0).toUpperCase() + string.slice(1);
-};
-
-var propsBinder = function (vueElement, leafletElement, props, options) {
-  var loop = function ( key ) {
-    var setMethodName = 'set' + capitalizeFirstLetter(key);
-    var deepValue =
-      props[key].type === Object ||
-      props[key].type === Array ||
-      Array.isArray(props[key].type);
-    if (props[key].custom && vueElement[setMethodName]) {
-      vueElement.$watch(
-        key,
-        function (newVal, oldVal) {
-          vueElement[setMethodName](newVal, oldVal);
-        },
-        {
-          deep: deepValue,
-        }
-      );
-    } else if (setMethodName === 'setOptions') {
-      vueElement.$watch(
-        key,
-        function (newVal, oldVal) {
-          (0,leaflet__WEBPACK_IMPORTED_MODULE_0__.setOptions)(leafletElement, newVal);
-        },
-        {
-          deep: deepValue,
-        }
-      );
-    } else if (leafletElement[setMethodName]) {
-      vueElement.$watch(
-        key,
-        function (newVal, oldVal) {
-          leafletElement[setMethodName](newVal);
-        },
-        {
-          deep: deepValue,
-        }
-      );
-    }
-  };
-
-  for (var key in props) loop( key );
-};
-
-var collectionCleaner = function (options) {
-  var result = {};
-  for (var key in options) {
-    var value = options[key];
-    if (value !== null && value !== undefined) {
-      result[key] = value;
-    }
-  }
-  return result;
-};
-
-var optionsMerger = function (props, instance) {
-  var options =
-    instance.options && instance.options.constructor === Object
-      ? instance.options
-      : {};
-  props = props && props.constructor === Object ? props : {};
-  var result = collectionCleaner(options);
-  props = collectionCleaner(props);
-  var defaultProps = instance.$options.props;
-  for (var key in props) {
-    var def = defaultProps[key]
-      ? defaultProps[key].default &&
-        typeof defaultProps[key].default === 'function'
-        ? defaultProps[key].default.call()
-        : defaultProps[key].default
-      : Symbol('unique');
-    var isEqual = false;
-    if (Array.isArray(def)) {
-      isEqual = JSON.stringify(def) === JSON.stringify(props[key]);
-    } else {
-      isEqual = def === props[key];
-    }
-    if (result[key] && !isEqual) {
-      console.warn(
-        (key + " props is overriding the value passed in the options props")
-      );
-      result[key] = props[key];
-    } else if (!result[key]) {
-      result[key] = props[key];
-    }
-  }
-  return result;
-};
-
-var findRealParent = function (firstVueParent) {
-  var found = false;
-  while (firstVueParent && !found) {
-    if (firstVueParent.mapObject === undefined) {
-      firstVueParent = firstVueParent.$parent;
-    } else {
-      found = true;
-    }
-  }
-  return firstVueParent;
-};
-
-var Layer = {
-  props: {
-    pane: {
-      type: String,
-      default: 'overlayPane',
-    },
-    attribution: {
-      type: String,
-      default: null,
-      custom: true,
-    },
-    name: {
-      type: String,
-      custom: true,
-      default: undefined,
-    },
-    layerType: {
-      type: String,
-      custom: true,
-      default: undefined,
-    },
-    visible: {
-      type: Boolean,
-      custom: true,
-      default: true,
-    },
-  },
-  mounted: function mounted() {
-    this.layerOptions = {
-      attribution: this.attribution,
-      pane: this.pane,
-    };
-  },
-  beforeDestroy: function beforeDestroy() {
-    this.unbindPopup();
-    this.unbindTooltip();
-    this.parentContainer.removeLayer(this);
-  },
-  methods: {
-    setAttribution: function setAttribution(val, old) {
-      var attributionControl = this.$parent.mapObject.attributionControl;
-      attributionControl.removeAttribution(old).addAttribution(val);
-    },
-    setName: function setName() {
-      this.parentContainer.removeLayer(this);
-      if (this.visible) {
-        this.parentContainer.addLayer(this);
-      }
-    },
-    setLayerType: function setLayerType() {
-      this.parentContainer.removeLayer(this);
-      if (this.visible) {
-        this.parentContainer.addLayer(this);
-      }
-    },
-    setVisible: function setVisible(isVisible) {
-      if (this.mapObject) {
-        if (isVisible) {
-          this.parentContainer.addLayer(this);
-        } else {
-          if (this.parentContainer.hideLayer) {
-            this.parentContainer.hideLayer(this);
-          } else {
-            this.parentContainer.removeLayer(this);
-          }
-        }
-      }
-    },
-    unbindTooltip: function unbindTooltip() {
-      var tooltip = this.mapObject ? this.mapObject.getTooltip() : null;
-      if (tooltip) {
-        tooltip.unbindTooltip();
-      }
-    },
-    unbindPopup: function unbindPopup() {
-      var popup = this.mapObject ? this.mapObject.getPopup() : null;
-      if (popup) {
-        popup.unbindPopup();
-      }
-    },
-    updateVisibleProp: function updateVisibleProp(value) {
-      /**
-       * Triggers when the visible prop needs to be updated
-       * @type {boolean}
-       * @property {boolean} value - value of the visible property
-       */
-      this.$emit('update:visible', value);
-    },
-  },
-};
-
-var InteractiveLayer = {
-  props: {
-    interactive: {
-      type: Boolean,
-      default: true
-    },
-    bubblingMouseEvents: {
-      type: Boolean,
-      default: true
-    }
-  },
-  mounted: function mounted () {
-    this.interactiveLayerOptions = {
-      interactive: this.interactive,
-      bubblingMouseEvents: this.bubblingMouseEvents
-    };
-  }
-};
-
-var Path = {
-  mixins: [Layer, InteractiveLayer],
-  props: {
-    lStyle: {
-      type: Object,
-      custom: true,
-      default: null
-    },
-    stroke: {
-      type: Boolean,
-      custom: true,
-      default: true
-    },
-    color: {
-      type: String,
-      custom: true,
-      default: '#3388ff'
-    },
-    weight: {
-      type: Number,
-      custom: true,
-      default: 3
-    },
-    opacity: {
-      type: Number,
-      custom: true,
-      default: 1.0
-    },
-    lineCap: {
-      type: String,
-      custom: true,
-      default: 'round'
-    },
-    lineJoin: {
-      type: String,
-      custom: true,
-      default: 'round'
-    },
-    dashArray: {
-      type: String,
-      custom: true,
-      default: null
-    },
-    dashOffset: {
-      type: String,
-      custom: true,
-      default: null
-    },
-    fill: {
-      type: Boolean,
-      custom: true,
-      default: false
-    },
-    fillColor: {
-      type: String,
-      custom: true,
-      default: '#3388ff'
-    },
-    fillOpacity: {
-      type: Number,
-      custom: true,
-      default: 0.2
-    },
-    fillRule: {
-      type: String,
-      custom: true,
-      default: 'evenodd'
-    },
-    className: {
-      type: String,
-      custom: true,
-      default: null
-    }
-  },
-  mounted: function mounted () {
-    this.pathOptions = Object.assign({}, this.layerOptions,
-      this.interactiveLayerOptions,
-      {stroke: this.stroke,
-      color: this.color,
-      weight: this.weight,
-      opacity: this.opacity,
-      lineCap: this.lineCap,
-      lineJoin: this.lineJoin,
-      dashArray: this.dashArray,
-      dashOffset: this.dashOffset,
-      fill: this.fill,
-      fillColor: this.fillColor,
-      fillOpacity: this.fillOpacity,
-      fillRule: this.fillRule,
-      className: this.className});
-
-    if (this.lStyle) {
-      console.warn('lStyle is deprecated and is going to be removed in the next major version');
-      for (var style in this.lStyle) {
-        this.pathOptions[style] = this.lStyle[style];
-      }
-    }
-  },
-  beforeDestroy: function beforeDestroy () {
-    if (this.parentContainer) {
-      this.parentContainer.removeLayer(this);
-    } else {
-      console.error('Missing parent container');
-    }
-  },
-  methods: {
-    setLStyle: function setLStyle (newVal) {
-      this.mapObject.setStyle(newVal);
-    },
-    setStroke: function setStroke (newVal) {
-      this.mapObject.setStyle({ stroke: newVal });
-    },
-    setColor: function setColor (newVal) {
-      this.mapObject.setStyle({ color: newVal });
-    },
-    setWeight: function setWeight (newVal) {
-      this.mapObject.setStyle({ weight: newVal });
-    },
-    setOpacity: function setOpacity (newVal) {
-      this.mapObject.setStyle({ opacity: newVal });
-    },
-    setLineCap: function setLineCap (newVal) {
-      this.mapObject.setStyle({ lineCap: newVal });
-    },
-    setLineJoin: function setLineJoin (newVal) {
-      this.mapObject.setStyle({ lineJoin: newVal });
-    },
-    setDashArray: function setDashArray (newVal) {
-      this.mapObject.setStyle({ dashArray: newVal });
-    },
-    setDashOffset: function setDashOffset (newVal) {
-      this.mapObject.setStyle({ dashOffset: newVal });
-    },
-    setFill: function setFill (newVal) {
-      this.mapObject.setStyle({ fill: newVal });
-    },
-    setFillColor: function setFillColor (newVal) {
-      this.mapObject.setStyle({ fillColor: newVal });
-    },
-    setFillOpacity: function setFillOpacity (newVal) {
-      this.mapObject.setStyle({ fillOpacity: newVal });
-    },
-    setFillRule: function setFillRule (newVal) {
-      this.mapObject.setStyle({ fillRule: newVal });
-    },
-    setClassName: function setClassName (newVal) {
-      this.mapObject.setStyle({ className: newVal });
-    }
-  }
-};
-
-var CircleMixin = {
-  mixins: [Path],
-  props: {
-    fill: {
-      type: Boolean,
-      custom: true,
-      default: true
-    },
-    radius: {
-      type: Number,
-      default: null
-    }
-  },
-  mounted: function mounted () {
-    this.circleOptions = Object.assign({}, this.pathOptions,
-      {radius: this.radius});
-  }
-};
-
-var Options = {
-  props: {
-    /**
-     * Leaflet options to pass to the component constructor
-     */
-    options: {
-      type: Object,
-      default: function () { return ({}); }
-    }
-  }
-};
-
-//
-
-/**
- * Draw a path in the shape of a circle around a center positioned at `latLng` coordinates
- */
-var script = {
-  name: 'LCircle',
-  mixins: [CircleMixin, Options],
-  props: {
-    latLng: {
-      type: [Object, Array],
-      default: function () { return [0, 0]; },
-    },
-  },
-  data: function data() {
-    return {
-      ready: false,
-    };
-  },
-  mounted: function mounted() {
-    var this$1 = this;
-
-    var options = optionsMerger(this.circleOptions, this);
-    this.mapObject = (0,leaflet__WEBPACK_IMPORTED_MODULE_0__.circle)(this.latLng, options);
-    leaflet__WEBPACK_IMPORTED_MODULE_0__.DomEvent.on(this.mapObject, this.$listeners);
-    propsBinder(this, this.mapObject, this.$options.props);
-    this.ready = true;
-    this.parentContainer = findRealParent(this.$parent);
-    this.parentContainer.addLayer(this, !this.visible);
-    this.$nextTick(function () {
-      /**
-       * Triggers when the component is ready
-       * @type {object}
-       * @property {object} mapObject - reference to leaflet map object
-       */
-      this$1.$emit('ready', this$1.mapObject);
-    });
-  },
-  methods: {},
-};
-
-function normalizeComponent(template, style, script, scopeId, isFunctionalTemplate, moduleIdentifier /* server only */, shadowMode, createInjector, createInjectorSSR, createInjectorShadow) {
-    if (typeof shadowMode !== 'boolean') {
-        createInjectorSSR = createInjector;
-        createInjector = shadowMode;
-        shadowMode = false;
-    }
-    // Vue.extend constructor export interop.
-    var options = typeof script === 'function' ? script.options : script;
-    // render functions
-    if (template && template.render) {
-        options.render = template.render;
-        options.staticRenderFns = template.staticRenderFns;
-        options._compiled = true;
-        // functional template
-        if (isFunctionalTemplate) {
-            options.functional = true;
-        }
-    }
-    // scopedId
-    if (scopeId) {
-        options._scopeId = scopeId;
-    }
-    var hook;
-    if (moduleIdentifier) {
-        // server build
-        hook = function (context) {
-            // 2.3 injection
-            context =
-                context || // cached call
-                    (this.$vnode && this.$vnode.ssrContext) || // stateful
-                    (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext); // functional
-            // 2.2 with runInNewContext: true
-            if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
-                context = __VUE_SSR_CONTEXT__;
-            }
-            // inject component styles
-            if (style) {
-                style.call(this, createInjectorSSR(context));
-            }
-            // register component module identifier for async chunk inference
-            if (context && context._registeredComponents) {
-                context._registeredComponents.add(moduleIdentifier);
-            }
-        };
-        // used by ssr in case component is cached and beforeCreate
-        // never gets called
-        options._ssrRegister = hook;
-    }
-    else if (style) {
-        hook = shadowMode
-            ? function (context) {
-                style.call(this, createInjectorShadow(context, this.$root.$options.shadowRoot));
-            }
-            : function (context) {
-                style.call(this, createInjector(context));
-            };
-    }
-    if (hook) {
-        if (options.functional) {
-            // register for functional component in vue file
-            var originalRender = options.render;
-            options.render = function renderWithStyleInjection(h, context) {
-                hook.call(context);
-                return originalRender(h, context);
-            };
-        }
-        else {
-            // inject component registration as beforeCreate hook
-            var existing = options.beforeCreate;
-            options.beforeCreate = existing ? [].concat(existing, hook) : [hook];
-        }
-    }
-    return script;
-}
-
-/* script */
-var __vue_script__ = script;
-
-/* template */
-var __vue_render__ = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticStyle:{"display":"none"}},[(_vm.ready)?_vm._t("default"):_vm._e()],2)};
-var __vue_staticRenderFns__ = [];
-
-  /* style */
-  var __vue_inject_styles__ = undefined;
-  /* scoped */
-  var __vue_scope_id__ = undefined;
-  /* module identifier */
-  var __vue_module_identifier__ = undefined;
-  /* functional template */
-  var __vue_is_functional_template__ = false;
-  /* style inject */
-  
-  /* style inject SSR */
-  
-  /* style inject shadow dom */
-  
-
-  
-  var __vue_component__ = /*#__PURE__*/normalizeComponent(
-    { render: __vue_render__, staticRenderFns: __vue_staticRenderFns__ },
-    __vue_inject_styles__,
-    __vue_script__,
-    __vue_scope_id__,
-    __vue_is_functional_template__,
-    __vue_module_identifier__,
-    false,
-    undefined,
-    undefined,
-    undefined
-  );
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__vue_component__);
-
-
-/***/ }),
-
-/***/ "./node_modules/vue2-leaflet/dist/components/LCircleMarker.js":
-/*!********************************************************************!*\
-  !*** ./node_modules/vue2-leaflet/dist/components/LCircleMarker.js ***!
-  \********************************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var leaflet__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! leaflet */ "./node_modules/leaflet/dist/leaflet-src.js");
-/* harmony import */ var leaflet__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(leaflet__WEBPACK_IMPORTED_MODULE_0__);
-
-
-var capitalizeFirstLetter = function (string) {
-  if (!string || typeof string.charAt !== 'function') {
-    return string;
-  }
-  return string.charAt(0).toUpperCase() + string.slice(1);
-};
-
-var propsBinder = function (vueElement, leafletElement, props, options) {
-  var loop = function ( key ) {
-    var setMethodName = 'set' + capitalizeFirstLetter(key);
-    var deepValue =
-      props[key].type === Object ||
-      props[key].type === Array ||
-      Array.isArray(props[key].type);
-    if (props[key].custom && vueElement[setMethodName]) {
-      vueElement.$watch(
-        key,
-        function (newVal, oldVal) {
-          vueElement[setMethodName](newVal, oldVal);
-        },
-        {
-          deep: deepValue,
-        }
-      );
-    } else if (setMethodName === 'setOptions') {
-      vueElement.$watch(
-        key,
-        function (newVal, oldVal) {
-          (0,leaflet__WEBPACK_IMPORTED_MODULE_0__.setOptions)(leafletElement, newVal);
-        },
-        {
-          deep: deepValue,
-        }
-      );
-    } else if (leafletElement[setMethodName]) {
-      vueElement.$watch(
-        key,
-        function (newVal, oldVal) {
-          leafletElement[setMethodName](newVal);
-        },
-        {
-          deep: deepValue,
-        }
-      );
-    }
-  };
-
-  for (var key in props) loop( key );
-};
-
-var collectionCleaner = function (options) {
-  var result = {};
-  for (var key in options) {
-    var value = options[key];
-    if (value !== null && value !== undefined) {
-      result[key] = value;
-    }
-  }
-  return result;
-};
-
-var optionsMerger = function (props, instance) {
-  var options =
-    instance.options && instance.options.constructor === Object
-      ? instance.options
-      : {};
-  props = props && props.constructor === Object ? props : {};
-  var result = collectionCleaner(options);
-  props = collectionCleaner(props);
-  var defaultProps = instance.$options.props;
-  for (var key in props) {
-    var def = defaultProps[key]
-      ? defaultProps[key].default &&
-        typeof defaultProps[key].default === 'function'
-        ? defaultProps[key].default.call()
-        : defaultProps[key].default
-      : Symbol('unique');
-    var isEqual = false;
-    if (Array.isArray(def)) {
-      isEqual = JSON.stringify(def) === JSON.stringify(props[key]);
-    } else {
-      isEqual = def === props[key];
-    }
-    if (result[key] && !isEqual) {
-      console.warn(
-        (key + " props is overriding the value passed in the options props")
-      );
-      result[key] = props[key];
-    } else if (!result[key]) {
-      result[key] = props[key];
-    }
-  }
-  return result;
-};
-
-var findRealParent = function (firstVueParent) {
-  var found = false;
-  while (firstVueParent && !found) {
-    if (firstVueParent.mapObject === undefined) {
-      firstVueParent = firstVueParent.$parent;
-    } else {
-      found = true;
-    }
-  }
-  return firstVueParent;
-};
-
-var Layer = {
-  props: {
-    pane: {
-      type: String,
-      default: 'overlayPane',
-    },
-    attribution: {
-      type: String,
-      default: null,
-      custom: true,
-    },
-    name: {
-      type: String,
-      custom: true,
-      default: undefined,
-    },
-    layerType: {
-      type: String,
-      custom: true,
-      default: undefined,
-    },
-    visible: {
-      type: Boolean,
-      custom: true,
-      default: true,
-    },
-  },
-  mounted: function mounted() {
-    this.layerOptions = {
-      attribution: this.attribution,
-      pane: this.pane,
-    };
-  },
-  beforeDestroy: function beforeDestroy() {
-    this.unbindPopup();
-    this.unbindTooltip();
-    this.parentContainer.removeLayer(this);
-  },
-  methods: {
-    setAttribution: function setAttribution(val, old) {
-      var attributionControl = this.$parent.mapObject.attributionControl;
-      attributionControl.removeAttribution(old).addAttribution(val);
-    },
-    setName: function setName() {
-      this.parentContainer.removeLayer(this);
-      if (this.visible) {
-        this.parentContainer.addLayer(this);
-      }
-    },
-    setLayerType: function setLayerType() {
-      this.parentContainer.removeLayer(this);
-      if (this.visible) {
-        this.parentContainer.addLayer(this);
-      }
-    },
-    setVisible: function setVisible(isVisible) {
-      if (this.mapObject) {
-        if (isVisible) {
-          this.parentContainer.addLayer(this);
-        } else {
-          if (this.parentContainer.hideLayer) {
-            this.parentContainer.hideLayer(this);
-          } else {
-            this.parentContainer.removeLayer(this);
-          }
-        }
-      }
-    },
-    unbindTooltip: function unbindTooltip() {
-      var tooltip = this.mapObject ? this.mapObject.getTooltip() : null;
-      if (tooltip) {
-        tooltip.unbindTooltip();
-      }
-    },
-    unbindPopup: function unbindPopup() {
-      var popup = this.mapObject ? this.mapObject.getPopup() : null;
-      if (popup) {
-        popup.unbindPopup();
-      }
-    },
-    updateVisibleProp: function updateVisibleProp(value) {
-      /**
-       * Triggers when the visible prop needs to be updated
-       * @type {boolean}
-       * @property {boolean} value - value of the visible property
-       */
-      this.$emit('update:visible', value);
-    },
-  },
-};
-
-var InteractiveLayer = {
-  props: {
-    interactive: {
-      type: Boolean,
-      default: true
-    },
-    bubblingMouseEvents: {
-      type: Boolean,
-      default: true
-    }
-  },
-  mounted: function mounted () {
-    this.interactiveLayerOptions = {
-      interactive: this.interactive,
-      bubblingMouseEvents: this.bubblingMouseEvents
-    };
-  }
-};
-
-var Path = {
-  mixins: [Layer, InteractiveLayer],
-  props: {
-    lStyle: {
-      type: Object,
-      custom: true,
-      default: null
-    },
-    stroke: {
-      type: Boolean,
-      custom: true,
-      default: true
-    },
-    color: {
-      type: String,
-      custom: true,
-      default: '#3388ff'
-    },
-    weight: {
-      type: Number,
-      custom: true,
-      default: 3
-    },
-    opacity: {
-      type: Number,
-      custom: true,
-      default: 1.0
-    },
-    lineCap: {
-      type: String,
-      custom: true,
-      default: 'round'
-    },
-    lineJoin: {
-      type: String,
-      custom: true,
-      default: 'round'
-    },
-    dashArray: {
-      type: String,
-      custom: true,
-      default: null
-    },
-    dashOffset: {
-      type: String,
-      custom: true,
-      default: null
-    },
-    fill: {
-      type: Boolean,
-      custom: true,
-      default: false
-    },
-    fillColor: {
-      type: String,
-      custom: true,
-      default: '#3388ff'
-    },
-    fillOpacity: {
-      type: Number,
-      custom: true,
-      default: 0.2
-    },
-    fillRule: {
-      type: String,
-      custom: true,
-      default: 'evenodd'
-    },
-    className: {
-      type: String,
-      custom: true,
-      default: null
-    }
-  },
-  mounted: function mounted () {
-    this.pathOptions = Object.assign({}, this.layerOptions,
-      this.interactiveLayerOptions,
-      {stroke: this.stroke,
-      color: this.color,
-      weight: this.weight,
-      opacity: this.opacity,
-      lineCap: this.lineCap,
-      lineJoin: this.lineJoin,
-      dashArray: this.dashArray,
-      dashOffset: this.dashOffset,
-      fill: this.fill,
-      fillColor: this.fillColor,
-      fillOpacity: this.fillOpacity,
-      fillRule: this.fillRule,
-      className: this.className});
-
-    if (this.lStyle) {
-      console.warn('lStyle is deprecated and is going to be removed in the next major version');
-      for (var style in this.lStyle) {
-        this.pathOptions[style] = this.lStyle[style];
-      }
-    }
-  },
-  beforeDestroy: function beforeDestroy () {
-    if (this.parentContainer) {
-      this.parentContainer.removeLayer(this);
-    } else {
-      console.error('Missing parent container');
-    }
-  },
-  methods: {
-    setLStyle: function setLStyle (newVal) {
-      this.mapObject.setStyle(newVal);
-    },
-    setStroke: function setStroke (newVal) {
-      this.mapObject.setStyle({ stroke: newVal });
-    },
-    setColor: function setColor (newVal) {
-      this.mapObject.setStyle({ color: newVal });
-    },
-    setWeight: function setWeight (newVal) {
-      this.mapObject.setStyle({ weight: newVal });
-    },
-    setOpacity: function setOpacity (newVal) {
-      this.mapObject.setStyle({ opacity: newVal });
-    },
-    setLineCap: function setLineCap (newVal) {
-      this.mapObject.setStyle({ lineCap: newVal });
-    },
-    setLineJoin: function setLineJoin (newVal) {
-      this.mapObject.setStyle({ lineJoin: newVal });
-    },
-    setDashArray: function setDashArray (newVal) {
-      this.mapObject.setStyle({ dashArray: newVal });
-    },
-    setDashOffset: function setDashOffset (newVal) {
-      this.mapObject.setStyle({ dashOffset: newVal });
-    },
-    setFill: function setFill (newVal) {
-      this.mapObject.setStyle({ fill: newVal });
-    },
-    setFillColor: function setFillColor (newVal) {
-      this.mapObject.setStyle({ fillColor: newVal });
-    },
-    setFillOpacity: function setFillOpacity (newVal) {
-      this.mapObject.setStyle({ fillOpacity: newVal });
-    },
-    setFillRule: function setFillRule (newVal) {
-      this.mapObject.setStyle({ fillRule: newVal });
-    },
-    setClassName: function setClassName (newVal) {
-      this.mapObject.setStyle({ className: newVal });
-    }
-  }
-};
-
-var CircleMixin = {
-  mixins: [Path],
-  props: {
-    fill: {
-      type: Boolean,
-      custom: true,
-      default: true
-    },
-    radius: {
-      type: Number,
-      default: null
-    }
-  },
-  mounted: function mounted () {
-    this.circleOptions = Object.assign({}, this.pathOptions,
-      {radius: this.radius});
-  }
-};
-
-var Options = {
-  props: {
-    /**
-     * Leaflet options to pass to the component constructor
-     */
-    options: {
-      type: Object,
-      default: function () { return ({}); }
-    }
-  }
-};
-
-//
-
-/**
- * A marker in the shape of a circle
- */
-var script = {
-  name: 'LCircleMarker',
-  mixins: [CircleMixin, Options],
-  props: {
-    latLng: {
-      type: [Object, Array],
-      default: function () { return [0, 0]; },
-    },
-    pane: {
-      type: String,
-      default: 'markerPane',
-    },
-  },
-  data: function data() {
-    return {
-      ready: false,
-    };
-  },
-  mounted: function mounted() {
-    var this$1 = this;
-
-    var options = optionsMerger(this.circleOptions, this);
-    this.mapObject = (0,leaflet__WEBPACK_IMPORTED_MODULE_0__.circleMarker)(this.latLng, options);
-    leaflet__WEBPACK_IMPORTED_MODULE_0__.DomEvent.on(this.mapObject, this.$listeners);
-    propsBinder(this, this.mapObject, this.$options.props);
-    this.ready = true;
-    this.parentContainer = findRealParent(this.$parent);
-    this.parentContainer.addLayer(this, !this.visible);
-    this.$nextTick(function () {
-      /**
-       * Triggers when the component is ready
-       * @type {object}
-       * @property {object} mapObject - reference to leaflet map object
-       */
-      this$1.$emit('ready', this$1.mapObject);
-    });
-  },
-};
-
-function normalizeComponent(template, style, script, scopeId, isFunctionalTemplate, moduleIdentifier /* server only */, shadowMode, createInjector, createInjectorSSR, createInjectorShadow) {
-    if (typeof shadowMode !== 'boolean') {
-        createInjectorSSR = createInjector;
-        createInjector = shadowMode;
-        shadowMode = false;
-    }
-    // Vue.extend constructor export interop.
-    var options = typeof script === 'function' ? script.options : script;
-    // render functions
-    if (template && template.render) {
-        options.render = template.render;
-        options.staticRenderFns = template.staticRenderFns;
-        options._compiled = true;
-        // functional template
-        if (isFunctionalTemplate) {
-            options.functional = true;
-        }
-    }
-    // scopedId
-    if (scopeId) {
-        options._scopeId = scopeId;
-    }
-    var hook;
-    if (moduleIdentifier) {
-        // server build
-        hook = function (context) {
-            // 2.3 injection
-            context =
-                context || // cached call
-                    (this.$vnode && this.$vnode.ssrContext) || // stateful
-                    (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext); // functional
-            // 2.2 with runInNewContext: true
-            if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
-                context = __VUE_SSR_CONTEXT__;
-            }
-            // inject component styles
-            if (style) {
-                style.call(this, createInjectorSSR(context));
-            }
-            // register component module identifier for async chunk inference
-            if (context && context._registeredComponents) {
-                context._registeredComponents.add(moduleIdentifier);
-            }
-        };
-        // used by ssr in case component is cached and beforeCreate
-        // never gets called
-        options._ssrRegister = hook;
-    }
-    else if (style) {
-        hook = shadowMode
-            ? function (context) {
-                style.call(this, createInjectorShadow(context, this.$root.$options.shadowRoot));
-            }
-            : function (context) {
-                style.call(this, createInjector(context));
-            };
-    }
-    if (hook) {
-        if (options.functional) {
-            // register for functional component in vue file
-            var originalRender = options.render;
-            options.render = function renderWithStyleInjection(h, context) {
-                hook.call(context);
-                return originalRender(h, context);
-            };
-        }
-        else {
-            // inject component registration as beforeCreate hook
-            var existing = options.beforeCreate;
-            options.beforeCreate = existing ? [].concat(existing, hook) : [hook];
-        }
-    }
-    return script;
-}
-
-/* script */
-var __vue_script__ = script;
-
-/* template */
-var __vue_render__ = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticStyle:{"display":"none"}},[(_vm.ready)?_vm._t("default"):_vm._e()],2)};
-var __vue_staticRenderFns__ = [];
-
-  /* style */
-  var __vue_inject_styles__ = undefined;
-  /* scoped */
-  var __vue_scope_id__ = undefined;
-  /* module identifier */
-  var __vue_module_identifier__ = undefined;
-  /* functional template */
-  var __vue_is_functional_template__ = false;
-  /* style inject */
-  
-  /* style inject SSR */
-  
-  /* style inject shadow dom */
-  
-
-  
-  var __vue_component__ = /*#__PURE__*/normalizeComponent(
-    { render: __vue_render__, staticRenderFns: __vue_staticRenderFns__ },
-    __vue_inject_styles__,
-    __vue_script__,
-    __vue_scope_id__,
-    __vue_is_functional_template__,
-    __vue_module_identifier__,
-    false,
-    undefined,
-    undefined,
-    undefined
-  );
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__vue_component__);
-
-
-/***/ }),
-
 /***/ "./node_modules/vue2-leaflet/dist/components/LControl.js":
 /*!***************************************************************!*\
   !*** ./node_modules/vue2-leaflet/dist/components/LControl.js ***!
@@ -56558,17 +56385,6 @@ module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAQAAAAD
 
 /***/ }),
 
-/***/ "./node_modules/leaflet/dist/images/marker-icon-2x.png":
-/*!*************************************************************!*\
-  !*** ./node_modules/leaflet/dist/images/marker-icon-2x.png ***!
-  \*************************************************************/
-/***/ ((module) => {
-
-"use strict";
-module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAABSCAMAAAAhFXfZAAAC91BMVEVMaXEzeak2f7I4g7g3g7cua5gzeKg8hJo3grY4g7c3grU0gLI2frE0daAubJc2gbQwd6QzeKk2gLMtd5sxdKIua5g1frA2f7IydaM0e6w2fq41fK01eqo3grgubJgta5cxdKI1f7AydaQydaMxc6EubJgvbJkwcZ4ubZkwcJwubZgubJcydqUydKIxapgubJctbJcubZcubJcvbJYubJcvbZkubJctbJctbZcubJg2f7AubJcrbZcubJcubJcua5g3grY0fq8ubJcubJdEkdEwhsw6i88vhswuhcsuhMtBjMgthMsrg8srgss6is8qgcs8i9A9iMYtg8spgcoogMo7hcMngMonf8olfso4gr8kfck5iM8jfMk4iM8he8k1fro7itAgesk2hs8eecgzfLcofssdeMg0hc4cd8g2hcsxeLQbdsgZdcgxeLImfcszhM0vda4xgckzhM4xg84wf8Yxgs4udKsvfcQucqhUndROmdM1fK0wcZ8vb5w0eqpQm9MzeKhXoNVcpdYydKNWn9VZotVKltJFjsIwcJ1Rms9OlslLmtH///8+kc9epdYzd6dbo9VHkMM2f7FHmNBClM8ydqVcpNY9hro3gLM9hLczealQmcw3fa46f7A8gLMxc6I3eagyc6FIldJMl9JSnNRSntNNl9JPnNJFi75UnM9ZodVKksg8kM45jc09e6ZHltFBk883gbRBh7pDk9EwcaBzn784g7dKkcY2i81Om9M7j85Llc81is09g7Q4grY/j9A0eqxKmdFFltBEjcXf6fFImdBCiLxJl9FGlNFBi78yiMxVndEvbpo6js74+vx+psPP3+o/ks5HkcpGmNCjwdZCkNDM3ehYoNJEls+lxNkxh8xHks0+jdC1zd5Lg6r+/v/H2ufz9/o3jM3t8/edvdM/k89Th61OiLBSjbZklbaTt9BfptdjmL1AicBHj8hGk9FAgK1dkLNTjLRekrdClc/k7fM0icy0y9tgp9c4jc2NtM9Dlc8zicxeXZn3AAAAQ3RSTlMAHDdTb4yPA+LtnEQmC4L2EmHqB7XA0d0sr478x4/Yd5i1zOfyPkf1sLVq4Nh3FvjxopQ2/STNuFzUwFIwxKaejILpIBEV9wAABhVJREFUeF6s1NdyFEcYBeBeoQIhRAkLlRDGrhIgY3BJL8CVeKzuyXFzzjkn5ZxzzuScg3PO8cKzu70JkO0LfxdTU//pM9vTu7Xgf6KqOVTb9X7toRrVEfBf1HTVjZccrT/2by1VV928Yty9ZbVuucdz90frG8DBjl9pVApbOstvmMuvVgaNXSfAAd6pGxpy6yxf5ph43pS/4f3uoaGm2rdu72S9xzOvMymkZFq/ptDrk90mhW7e4zl7HLzhxGWPR20xmSxJ/VqldG5m9XhaVOA1DadsNh3Pu5L2N6QtPO/32JpqQBVVk20oy/Pi2s23WEvyfHbe1thadVQttvm7Llf65gGmXK67XtupyoM7HQhmXdLS8oGWJNeOJ3C5fG5XCEJnkez3/oFdsvgJ4l2ANZwhrJKk/7OSXa+3Vw2WJMlKnGkobouYk6T0TyX30klOUnTD9HJ5qpckL3EW/w4XF3Xd0FGywXUrstrclVsqz5Pd/sXFYyDnPdrLcQODmGOK47IZb4CmibmMn+MYRzFZ5jg33ZL/EJrWcszHmANy3ARBK/IXtciJy8VsitPSdE3uuHxzougojcUdr8/32atnz/ev3f/K5wtpxUTpcaI45zusVDpYtZi+jg0oU9b3x74h7+n9ABvYEZeKaVq0sh0AtLKsFtqNBdeT0MrSzwwlq9+x6xAO4tgOtSzbCjrNQQiNvQUbUEubvzBUeGw26yDCsRHCoLkTHDa7IdOLIThs/gHvChszh2CimE8peRs47cxANI0lYNB5y1DljpOF0IhzBDPOZnDOqYYbeGKECbPzWnXludPphw5c2YBq5zlwXphIbO4VDCZ0gnPfUO1TwZoYwAs2ExPCedAu9DAjfQUjzITQb3jNj0KG2Sgt6BHaQUdYzWz+XmBktOHwanXjaSTcwwziBcuMOtwBmqPrTOxFQR/DRKKPqyur0aiW6cULYsx6tBm0jXpR/AUWR6HRq9WVW6MRhIq5jLyjbaCTDCijyYJNpCajdyobP/eTw0iexBAKkJ3gA5KcQb2zBXsIBckn+xVv8jkZSaEFHE+jFEleAEfayRU0MouNoBmB/L50Ai/HSLIHxcrpCvnhSQAuakKp2C/YbCylJjXRVy/z3+Kv/RrNcCo+WUzlVEhzKffnTQnxeN9fWF88fiNCUdSTsaufaChKWInHeysygfpIqagoakW+vV20J8uyl6TyNKEZWV4oRSPyCkWpgOLSbkCObT8o2r6tlG58HQquf6O0v50tB7JM7F4EORd2dx/K0w/KHsVkLPaoYrwgP/y7krr3SSMA4zj+OBgmjYkxcdIJQyQRKgg2viX9Hddi9UBb29LrKR7CVVEEEXWojUkXNyfTNDE14W9gbHJNuhjDettN3ZvbOvdOqCD3Jp/9l+/wJE+9PkYGjx/fqkys3S2rMozM/o2106rfMUINo6hVqz+eu/hd1c4xTg0TAfy5kV+4UG6+IthHTU9woWmxuKNbTfuCSfovBCxq7EtHqvYL4Sm6F8GVxsSXHMQ07TOi1DKtZxjWaaIyi4CXWjxPccUw8WVbMYY5wxC1mzEyXMJWkllpRloi+Kkoq69sxBTlElF6aAxYUbjXNlhlDZilDnM4U5SlN5biRsRHnbx3mbeWjEh4mEyiuJDl5XcWVmX5GvNkFgLWZM5qwsop4/AWfLhU1cR7k1VVvcYCWRkOI6Xy5gmnphCYIkvzuNYzHzosq2oNk2RtSs8khfUOfHIDgR6ysYBaMpl4uEgk2U/oJTs9AaTSwma7dT69geAE2ZpEjUsn2ieJNHeKfrI3EcAGJ2ZaNgVuC8EBctCLc57P5u5led6IOBkIYkuQMrmmjChs4VkfOerHqSBkPzZlhe06RslZ3zMjk2sscqKwY0RcjKK+LWbzd7KiHhkncs/siFJ+V5eXxD34B8nVuJEpGJNmxN2gH3vSvp7J70tF+D1Ej8qUJD1TkErAND2GZwTFg/LubvmgiBG3SOvdlsqFQrkEzJCL1rstlnVFROixZoDDSuXQFHESwVGlcuQcMb/b42NgjLowh5MTDFE3vNB5qStRIErdCQEh6pLPR92anSUb/wAIhldAaDMpGgAAAABJRU5ErkJggg==";
-
-/***/ }),
-
 /***/ "./node_modules/leaflet/dist/images/marker-icon.png":
 /*!**********************************************************!*\
   !*** ./node_modules/leaflet/dist/images/marker-icon.png ***!
@@ -56577,17 +56393,6 @@ module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAABSCAMAAAAh
 
 "use strict";
 module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAApCAYAAADAk4LOAAAFgUlEQVR4Aa1XA5BjWRTN2oW17d3YaZtr2962HUzbDNpjszW24mRt28p47v7zq/bXZtrp/lWnXr337j3nPCe85NcypgSFdugCpW5YoDAMRaIMqRi6aKq5E3YqDQO3qAwjVWrD8Ncq/RBpykd8oZUb/kaJutow8r1aP9II0WmLKLIsJyv1w/kqw9Ch2MYdB++12Onxee/QMwvf4/Dk/Lfp/i4nxTXtOoQ4pW5Aj7wpici1A9erdAN2OH64x8OSP9j3Ft3b7aWkTg/Fm91siTra0f9on5sQr9INejH6CUUUpavjFNq1B+Oadhxmnfa8RfEmN8VNAsQhPqF55xHkMzz3jSmChWU6f7/XZKNH+9+hBLOHYozuKQPxyMPUKkrX/K0uWnfFaJGS1QPRtZsOPtr3NsW0uyh6NNCOkU3Yz+bXbT3I8G3xE5EXLXtCXbbqwCO9zPQYPRTZ5vIDXD7U+w7rFDEoUUf7ibHIR4y6bLVPXrz8JVZEql13trxwue/uDivd3fkWRbS6/IA2bID4uk0UpF1N8qLlbBlXs4Ee7HLTfV1j54APvODnSfOWBqtKVvjgLKzF5YdEk5ewRkGlK0i33Eofffc7HT56jD7/6U+qH3Cx7SBLNntH5YIPvODnyfIXZYRVDPqgHtLs5ABHD3YzLuespb7t79FY34DjMwrVrcTuwlT55YMPvOBnRrJ4VXTdNnYug5ucHLBjEpt30701A3Ts+HEa73u6dT3FNWwflY86eMHPk+Yu+i6pzUpRrW7SNDg5JHR4KapmM5Wv2E8Tfcb1HoqqHMHU+uWDD7zg54mz5/2BSnizi9T1Dg4QQXLToGNCkb6tb1NU+QAlGr1++eADrzhn/u8Q2YZhQVlZ5+CAOtqfbhmaUCS1ezNFVm2imDbPmPng5wmz+gwh+oHDce0eUtQ6OGDIyR0uUhUsoO3vfDmmgOezH0mZN59x7MBi++WDL1g/eEiU3avlidO671bkLfwbw5XV2P8Pzo0ydy4t2/0eu33xYSOMOD8hTf4CrBtGMSoXfPLchX+J0ruSePw3LZeK0juPJbYzrhkH0io7B3k164hiGvawhOKMLkrQLyVpZg8rHFW7E2uHOL888IBPlNZ1FPzstSJM694fWr6RwpvcJK60+0HCILTBzZLFNdtAzJaohze60T8qBzyh5ZuOg5e7uwQppofEmf2++DYvmySqGBuKaicF1blQjhuHdvCIMvp8whTTfZzI7RldpwtSzL+F1+wkdZ2TBOW2gIF88PBTzD/gpeREAMEbxnJcaJHNHrpzji0gQCS6hdkEeYt9DF/2qPcEC8RM28Hwmr3sdNyht00byAut2k3gufWNtgtOEOFGUwcXWNDbdNbpgBGxEvKkOQsxivJx33iow0Vw5S6SVTrpVq11ysA2Rp7gTfPfktc6zhtXBBC+adRLshf6sG2RfHPZ5EAc4sVZ83yCN00Fk/4kggu40ZTvIEm5g24qtU4KjBrx/BTTH8ifVASAG7gKrnWxJDcU7x8X6Ecczhm3o6YicvsLXWfh3Ch1W0k8x0nXF+0fFxgt4phz8QvypiwCCFKMqXCnqXExjq10beH+UUA7+nG6mdG/Pu0f3LgFcGrl2s0kNNjpmoJ9o4B29CMO8dMT4Q5ox8uitF6fqsrJOr8qnwNbRzv6hSnG5wP+64C7h9lp30hKNtKdWjtdkbuPA19nJ7Tz3zR/ibgARbhb4AlhavcBebmTHcFl2fvYEnW0ox9xMxKBS8btJ+KiEbq9zA4RthQXDhPa0T9TEe69gWupwc6uBUphquXgf+/FrIjweHQS4/pduMe5ERUMHUd9xv8ZR98CxkS4F2n3EUrUZ10EYNw7BWm9x1GiPssi3GgiGRDKWRYZfXlON+dfNbM+GgIwYdwAAAAASUVORK5CYII=";
-
-/***/ }),
-
-/***/ "./node_modules/leaflet/dist/images/marker-shadow.png":
-/*!************************************************************!*\
-  !*** ./node_modules/leaflet/dist/images/marker-shadow.png ***!
-  \************************************************************/
-/***/ ((module) => {
-
-"use strict";
-module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACkAAAApCAQAAAACach9AAACMUlEQVR4Ae3ShY7jQBAE0Aoz/f9/HTMzhg1zrdKUrJbdx+Kd2nD8VNudfsL/Th///dyQN2TH6f3y/BGpC379rV+S+qqetBOxImNQXL8JCAr2V4iMQXHGNJxeCfZXhSRBcQMfvkOWUdtfzlLgAENmZDcmo2TVmt8OSM2eXxBp3DjHSMFutqS7SbmemzBiR+xpKCNUIRkdkkYxhAkyGoBvyQFEJEefwSmmvBfJuJ6aKqKWnAkvGZOaZXTUgFqYULWNSHUckZuR1HIIimUExutRxwzOLROIG4vKmCKQt364mIlhSyzAf1m9lHZHJZrlAOMMztRRiKimp/rpdJDc9Awry5xTZCte7FHtuS8wJgeYGrex28xNTd086Dik7vUMscQOa8y4DoGtCCSkAKlNwpgNtphjrC6MIHUkR6YWxxs6Sc5xqn222mmCRFzIt8lEdKx+ikCtg91qS2WpwVfBelJCiQJwvzixfI9cxZQWgiSJelKnwBElKYtDOb2MFbhmUigbReQBV0Cg4+qMXSxXSyGUn4UbF8l+7qdSGnTC0XLCmahIgUHLhLOhpVCtw4CzYXvLQWQbJNmxoCsOKAxSgBJno75avolkRw8iIAFcsdc02e9iyCd8tHwmeSSoKTowIgvscSGZUOA7PuCN5b2BX9mQM7S0wYhMNU74zgsPBj3HU7wguAfnxxjFQGBE6pwN+GjME9zHY7zGp8wVxMShYX9NXvEWD3HbwJf4giO4CFIQxXScH1/TM+04kkBiAAAAAElFTkSuQmCC";
 
 /***/ }),
 

@@ -6,13 +6,6 @@
 			:center="center"
 			@ready="onReady"
 			@locationfound="onLocationFound">
-			<template v-if="location">
-				<LCircleMarker :lat-lng="location.latlng" :fill-opacity="1" :radius="10" />
-				<LCircle :lat-lng="location.latlng"
-					:fill-opacity="0.3"
-					:options="{radius:location.accuracy}"
-					:stroke="false" />
-			</template>
 			<LTileLayer :url="url" :attribution="attribution" />
 			<LControlZoom position="bottomright" />
 			<LControlScale position="topright" :imperial="false" :metric="true" />
@@ -28,18 +21,20 @@
 
 <script>
 
-import { LMap, LTileLayer, LControl, LMarker, LCircleMarker, LCircle, LControlZoom, LControlScale } from 'vue2-leaflet'
+import { LMap, LTileLayer, LControl, LMarker, LControlZoom, LControlScale } from 'vue2-leaflet'
 
 import { delay } from '../utils.js'
 
-import { Icon } from 'leaflet'
-
-delete Icon.Default.prototype._getIconUrl
-Icon.Default.mergeOptions({
-	iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
-	iconUrl: require('leaflet/dist/images/marker-icon.png'),
-	shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
-})
+import L from 'leaflet'
+// import { L, Icon } from 'leaflet'
+import 'leaflet.locatecontrol'
+ 
+//delete Icon.Default.prototype._getIconUrl
+//Icon.Default.mergeOptions({
+//	iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
+//	iconUrl: require('leaflet/dist/images/marker-icon.png'),
+//	shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
+//})
 
 export default {
 	name: 'MyMap',
@@ -51,8 +46,6 @@ export default {
 		    LControlScale,
 		    LControlZoom,
 		    LMarker,
-		    LCircleMarker,
-		    LCircle,
 	},
 
 	data() {
@@ -87,12 +80,36 @@ export default {
 		},
 		onReady() {
 		    this.map = this.$refs.map.mapObject
-		    this.map.locate()
+		    this.initLocControl(this.map)
+		    // this.map.locate()
 		},
 		onLocationFound(l) {
 		    // console.log(l)
 		    this.location = l
 		    this.map.flyTo(this.location.latlng)
+		},
+		initLocControl(map) {
+			// location control
+			const locControl = L.control.locate({
+				position: 'bottomright',
+				drawCircle: true,
+				drawMarker: true,
+				showPopup: false,
+				icon: 'icon icon-address',
+				iconLoading: 'icon icon-loading-small',
+				strings: {
+					title: t('maps', 'Current location'),
+				},
+				flyTo: true,
+				returnToPrevBounds: true,
+				setView: 'untilPan',
+				showCompass: true,
+				locateOptions: { enableHighAccuracy: true, maxZoom: 15 },
+				onLocationError: (e) => {
+					alert(e.message)
+				},
+			}).addTo(map)
+			locControl.start()
 		},
 	},
 }
