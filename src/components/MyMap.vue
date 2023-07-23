@@ -1,7 +1,26 @@
 <template>
 	<div class="map-container">
-		<LMap :zoom="zoom" :center="center">
+		<LMap ref="map"
+			:zoom="zoom"
+			:options="{zoomControl:false}"
+			:center="center"
+			@ready="onReady"
+			@locationfound="onLocationFound">
+			<template v-if="location">
+				<LCircleMarker :lat-lng="location.latlng" :fill-opacity="1" :radius="10" />
+				<LCircle :lat-lng="location.latlng"
+					:fill-opacity="0.3"
+					:options="{radius:location.accuracy}"
+					:stroke="false" />
+			</template>
 			<LTileLayer :url="url" :attribution="attribution" />
+			<LControlZoom position="bottomright" />
+			<LControlScale position="topright" :imperial="false" :metric="true" />
+			<template v-if="location">
+				<LControl position="topright">
+					{{ location.latlng }}
+				</LControl>
+			</template>
 			<LMarker :lat-lng="markerLatLng" />
 		</LMap>
 	</div>
@@ -9,7 +28,7 @@
 
 <script>
 
-import { LMap, LTileLayer, LMarker } from 'vue2-leaflet'
+import { LMap, LTileLayer, LControl, LMarker, LCircleMarker, LCircle, LControlZoom, LControlScale } from 'vue2-leaflet'
 
 import { delay } from '../utils.js'
 
@@ -28,11 +47,18 @@ export default {
 	components: {
 		    LMap,
 		    LTileLayer,
+		    LControl,
+		    LControlScale,
+		    LControlZoom,
 		    LMarker,
+		    LCircleMarker,
+		    LCircle,
 	},
 
 	data() {
 		return {
+			map: null,
+			location: null,
 			url: 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png',
 			attribution: '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors',
 		        zoom: 15,
@@ -58,6 +84,15 @@ export default {
 			delay(() => {
 				this.$emit('edit-route', this.route.id, newValue)
 			}, 2000)()
+		},
+		onReady() {
+		    this.map = this.$refs.map.mapObject
+		    this.map.locate()
+		},
+		onLocationFound(l) {
+		    // console.log(l)
+		    this.location = l
+		    this.map.flyTo(this.location.latlng)
 		},
 	},
 }
